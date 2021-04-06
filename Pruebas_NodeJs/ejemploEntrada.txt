@@ -25,7 +25,7 @@ Lex {:
     Terminal$_Decimal<-([0-9]*)($_Punto)($_NUMEROS_2);# terminal combinado
 :}
 
-Syntax {{
+Syntax {{:
     # Declaración de no terminales de la forma
     # No_Terminal %_Nombre ;
 

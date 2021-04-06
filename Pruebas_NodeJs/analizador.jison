@@ -20,13 +20,14 @@
 
 /*Apartado de deficion de expresiones regulares y tokens  de retorno*/
 
-//DECIMALES
-[0-9]+("."[0-9]+)?\b    return 'DECIMAL'
-//ENTEROS
-[0-9]+\b                return 'ENTERO'
-//CARACTERES DEFINIDOS
-"["                     return 'CORIZQ'
-"]"                     return 'CORDER'
+//Palabra recervada Terminal
+(Terminal)              return 'TERMINAL'
+(Lex)                   return 'LEX'
+(Wison)                 return 'WISON'
+([{][:])                return 'INIT_LEX'
+([:][}])                return 'END_LEX'
+([#][^]*[\n])           return 'COMENTARIO'
+
 
 /* Las últimas dos expresiones son para reconocer el fin de la entrada
  y caracteres no válidos.*/
@@ -40,47 +41,24 @@
 /* Asociación de operadores y precedencia si fuera necesario */
 
 /*Definicion del simbolo inicial*/
+
 %start ini
 
 %{
-	/*Codigo Javascript Incrustado*/
+	//Codigo Javascript Incrustado
 %}
 
-/*separador de area*/
+//separador de area
 %% 
 
-ini : expresiones EOF 
+ini : expresion 
 ;
 
-expresiones : expresiones expresion 
-	| expresion
-	| error {
-        console.log('Este es un error : ' + yytext +
-        ', en la linea: ' + (this._$.first_line+1) +
-        ', en la columna: ' + (this._$.first_column+1));
-    }
-;
+expresiones : comentarios
+	        | wisonEs
+	        | error 
+            ;
 
-expresion
-	: CORIZQ numero CORDER {
-		console.log('El valor de la expresión es: ' +$1 + $2 + $3);
-	}
-;
-
- /* Para sintetizar un valor asociado al no terminal
-     de lado izquierdo de la producción hacemos uso 
-     de la variable $$. 
-     La variable $$ es propia de Jison, 
-     los alias se defines como $Num_Alias.
-     Para cada producción sintetizamos 
-     el valor del terminal o no terminal aceptado. */ 
-
-numero : ENTERO { 
-        //retormanos el numero 
-        $$ = Number($1);
-
-    }
-	| DECIMAL {
-        $$ = Number($1);
-    }
-;
+comentarios :   expresion
+            |   COMENTARIO
+            ;
