@@ -1,0 +1,19 @@
+textarea{
+    background-color: darkcyan;
+}
+
+button{
+    background-color: gray;
+    border-color: white;
+}
+button:hover{
+    background-color: darkcyan;
+    border-color: white;
+}
+
+a{
+       color: white;
+}
+a:hover{
+    color: darkcyan;
+}

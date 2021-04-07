@@ -1,0 +1,23 @@
+#Estructura de Wison
+
+Wison ¿
+
+Lex {:
+
+    # Declaracion de terminales de la forma:
+    # Terminal $_NoMbre <- Exprecion;
+:}
+
+Syntax {{:
+    # Declaración de no terminales de la forma
+    # No_Terminal %_Nombre ;
+
+    # Simbolo inicial de la forma
+    # Initial_Sim %_Nombre ;
+    
+    #Todo símbolo no terminal debe ser declarado antesde usarse en las producciones
+    # Las producciones son de la siguiente forma
+    # %_Initial_Sim  <= %_Prod_A ... %_No_terminal_No $_Terminal_N ... ;
+
+? Wison
+# Fin de estructura Wison

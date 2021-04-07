@@ -1,6 +1,30 @@
-<header>
-    <div class="container">
-        <h2 class="">Editor de Texto Wison</h2>
-        <input type=""/>
-    </div>
-</header>
+
+<div class="container">
+  <div>
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" (click)="helpUser();"  >Ayuda</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page">Cargar Archivo Existente</a>
+      </li>
+    </ul>
+  </div>
+
+  <app-help #sectorHelp *ngIf="ayuda"></app-help>
+    <form>
+      <div class="mb-3">
+        <label for="textoWison" class="form-label" style="color: white;font-size: larger;"></label>
+        <textarea class="form-control" id="textoWsion" name="textoWison" rows="15"></textarea>
+      </div>
+      <button type="submit" class="btn">Generar Analizador</button>
+    </form>
+    <form>
+      <div class="mb-3">
+        <label for="textParse" class="form-label" style="color: white; font-size: larger;"></label>
+        <textarea class="form-control" id="textParse" name="textParse" rows="15"></textarea>
+      </div>
+      <button type="submit" class="btn">Parse</button>
+    </form>
+
+</div>
