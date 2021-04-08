@@ -11,11 +11,11 @@
     </ul>
   </div>
 
-  <app-help #sectorHelp *ngIf="ayuda"></app-help>
-    <form>
+  <app-help *ngIf="ayuda"></app-help>
+    <form (submit)="procesarTexto(textWison.value)">
       <div class="mb-3">
-        <label for="textoWison" class="form-label" style="color: white;font-size: larger;"></label>
-        <textarea class="form-control" id="textoWsion" name="textoWison" rows="15"></textarea>
+        <label class="form-label" style="color: white;font-size: larger;"></label>
+        <textarea #textWison class="form-control" rows="15"></textarea>
       </div>
       <button type="submit" class="btn">Generar Analizador</button>
     </form>

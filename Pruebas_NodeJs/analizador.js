@@ -75,9 +75,9 @@ var analizador = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o};
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"ini":3,"expresion":4,"expresiones":5,"comentarios":6,"wisonEs":7,"COMENTARIO":8,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"expresion",7:"wisonEs",8:"COMENTARIO"},
-productions_: [0,[3,1],[5,1],[5,1],[5,1],[6,1],[6,1]],
+symbols_: {"error":2,"ini":3,"WISON_INI":4,"expresion":5,"WISON_END":6,"EOF":7,"expresiones":8,"LEX":9,"INI_LEX":10,"contLex":11,"END_LEX":12,"expresionP":13,"TERMINAL":14,"STATE_TERMINAL":15,"ASIGN_RE":16,"regularExp":17,"PUNTO_COMA":18,"SINGLE_EXP":19,"SYN":20,"INI_SYN":21,"contSyn":22,"END_SYN":23,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"WISON_INI",5:"expresion",6:"WISON_END",7:"EOF",9:"LEX",10:"INI_LEX",12:"END_LEX",14:"TERMINAL",15:"STATE_TERMINAL",16:"ASIGN_RE",18:"PUNTO_COMA",19:"SINGLE_EXP",20:"SYN",21:"INI_SYN",23:"END_SYN"},
+productions_: [0,[3,4],[8,5],[8,1],[11,6],[11,1],[17,1],[17,0],[13,4],[13,1],[22,0],[22,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -85,8 +85,8 @@ var $0 = $$.length - 1;
 switch (yystate) {
 }
 },
-table: [{3:1,4:[1,2]},{1:[3]},{1:[2,1]}],
-defaultActions: {2:[2,1]},
+table: [{3:1,4:[1,2]},{1:[3]},{5:[1,3]},{6:[1,4]},{7:[1,5]},{1:[2,1]}],
+defaultActions: {5:[2,1]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -666,26 +666,54 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0: /*ignorar*/
 break;
-case 1:return 'TERMINAL'
+case 1:return 14
 break;
-case 2:return 'LEX'
+case 2:return 9
 break;
-case 3:return 'WISON'
+case 3:return 4
 break;
-case 4:return 'INIT_LEX'
+case 4:return 6
 break;
-case 5:return 'END_LEX'
+case 5:return 10
 break;
-case 6:return 8
+case 6:return 12
 break;
-case 7:return 'EOF'
+case 7:return 18
 break;
-case 8:return 'INVALID'
+case 8:return 21
+break;
+case 9:return 23
+break;
+case 10:return 'NO_TERMINAL'
+break;
+case 11:return 'INI_SYM'
+break;
+case 12:return 'PRODUCTION'
+break;
+case 13:return 16
+break;
+case 14:return 15
+break;
+case 15:return 'KLEE'
+break;
+case 16:return 'C_POSI'
+break;
+case 17:return 'C_ANS'
+break;
+case 18:return 19
+break;
+case 19://Comentario de una sola linea
+break;
+case 20://comentario de bloque
+break;
+case 21:return 7
+break;
+case 22:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:[ \r\t\n])/,/^(?:(Terminal))/,/^(?:(Lex))/,/^(?:(Wison))/,/^(?:([{][:]))/,/^(?:([:][}]))/,/^(?:([#][^]*[\n]))/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8],"inclusive":true}}
+rules: [/^(?:[ \r\t\n])/,/^(?:(Terminal))/,/^(?:(Lex))/,/^(?:(Wison[¿]))/,/^(?:([?]Wison))/,/^(?:([{][:]))/,/^(?:([:][}]))/,/^(?:([;]))/,/^(?:([{][{][:]))/,/^(?:([:][}][}]))/,/^(?:(No_Terminal))/,/^(?:(Initial_Sim))/,/^(?:([<][=]))/,/^(?:([<][-]))/,/^(?:([$][_][a-zA-Z]+([a-zA-Z]|[_]|[0-9])*))/,/^(?:([*]))/,/^(?:([+]))/,/^(?:([?]))/,/^(?:([']([a-zA-Z]|[0-9]|)+[']))/,/^(?:([#][^]*[\n]))/,/^(?:([\/][*][*][^]*[*][\/]))/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],"inclusive":true}}
 });
 return lexer;
 })();

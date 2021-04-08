@@ -1,4 +1,5 @@
 import { Component, OnInit} from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-editor',
@@ -14,8 +15,13 @@ export class EditorComponent implements OnInit {
   ngOnInit(): void {
 
   }
-
   helpUser(){
     this.ayuda = true;
   }
+
+  procesarTexto(code:string){
+    console.log(code);
+    return false;
+  }
+
 }

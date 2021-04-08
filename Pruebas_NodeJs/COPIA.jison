@@ -23,26 +23,23 @@
 //Palabra recervada Terminal
 (Terminal)                                  return 'TERMINAL'
 (Lex)                                       return 'LEX'
+(Syntax)                                    return 'SYN'
 (Wison[¿])                                  return 'WISON_INI'
 ([?]Wison)                                  return 'WISON_END'
 ([{][:])                                    return 'INI_LEX'
 ([:][}])                                    return 'END_LEX'
-([;])                                       return 'PUNTO_COMA'
+([;])                                         return 'PUNTO_COMA'
 ([{][{][:])                                 return 'INI_SYN'
 ([:][}][}])                                 return 'END_SYN'
 (No_Terminal)                               return 'NO_TERMINAL'
 (Initial_Sim)                               return 'INI_SYM'
-([<][=])                                    return 'PRODUCTION'
-([<][-])                                    return 'ASIGN_RE'
+(<=)                                        return 'PRODUCTION'
+(<-)                                        return 'ASIGN_RE'
 ([$][_][a-zA-Z]+([a-zA-Z]|[_]|[0-9])*)      return 'STATE_TERMINAL'
 ([*])                                       return 'KLEE'
 ([+])                                       return 'C_POSI'
 ([?])                                       return 'C_ANS'
-([']([a-zA-Z]|[0-9]|)+['])                  return 'SINGLE_EXP'
-(([\[]((aA-zZ)|(0-9))[\]])))                  return 'COMP_EXP'
 ([#][^]*[\n])                               //Comentario de una sola linea
-([/][*][*][^]*[*][/])                       //comentario de bloque
-
 
 /* Las últimas dos expresiones son para reconocer el fin de la entrada
  y caracteres no válidos.*/
@@ -59,33 +56,9 @@
 
 %start ini
 
-%{
-	//Codigo Javascript Incrustado
-%}
-
-//separador de area
 %% 
 
-ini : WISON_INI expresion WISON_END EOF
-;
+ini : expresion EOF
+    ;
 
-expresiones : LEX INI_LEX contLex END_LEX expresionP
-	        | error 
-            ;
-
-contLex :   TERMINAL STATE_TERMINAL ASIGN_RE regularExp PUNTO_COMA contLex
-        |   error
-        ;
-
-regularExp  :   SINGLE_EXP
-            |   
-            ;
-
-expresionP  : SYN INI_SYN contSyn END_SYN
-            | error
-            ;
-
-contSyn :
-        | error
-        ;
-
+expresion   :   LEX;
