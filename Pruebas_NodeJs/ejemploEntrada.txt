@@ -1,53 +1,35 @@
-#Esto es un comentario de linea
-#Estructura de Wison
 
-Wison ¿
+Wison¿
 
 Lex {:
-    /**
-    Esto es un
-    Comentario de bloque
-    */
-    # Declaracion de terminales de la forma:
-    # Terminal $_NoMbre <- Exprecion;
-
-    Terminal $_Una_A<-‘a’; # cualquier carácteralfanumérico por separado
-    Terminal $_Mas<-‘+’; # cualquier carácterespecial por separado
-    Terminal $_Punto<-‘.’;# cualquier carácterespecial por separado
-    Terminal $_P_Ab<-‘(’;# cualquier carácterespecial por separado
-    Terminal $_P_Ce<-‘)’;# cualquier carácterespecial por separado
-    Terminal $_FIN<-‘FIN’;# cualquier palabrareservada
-    Terminal $_Letra<-[aA-zZ];# alfabeto completoen mayusculas y minusculas
-    Terminal $_NUMERO<-[0-9];# Digitos del0 al 9
-    Terminal $_NUMEROS<-[0-9]*;# Estrella deKleene para hacer 0 o n veces
-    Terminal$_NUMEROS_2<-[0-9]+;# Cerradura positivapara hacer 1 on veces
-    Terminal$_NUMEROS_3<-[0-9]?;# reconoce lacláusula ? para hacer 0 o 1 vez
-    Terminal$_Decimal<-([0-9]*)($_Punto)($_NUMEROS_2);# terminal combinado
+    Terminal $_Una_A <- 'a';
+    Terminal $_Mas <- '+';
+    Terminal $_Punto <- '.';
+    Terminal $_P_Ab <- '(';
+    Terminal $_P_Ce <- ')';
+    Terminal $_FIN <- 'FIN';
+    Terminal $_Letra <- [aA-zZ];
+    Terminal $_NUMERO <- [0-9];
+    Terminal $_NUMEROS <- [0-9]*;
+    Terminal $_NUMEROS_2 <- [0-9]+;
+    Terminal $_NUMEROS_3 <- [0-9]?;
+    Terminal $_Decimal <- ([0-9]*)($_Punto)($_NUMEROS_2);
 :}
 
-Syntax {{:
-    # Declaración de no terminales de la forma
-    # No_Terminal %_Nombre ;
+Syntax{{:
 
     No_Terminal %_Prod_A;
     No_Terminal %_Prod_B;
     No_Terminal %_Prod_C;
     No_Terminal %_S;
-
-    # Simbolo inicial de la forma
-    # Initial_Sim %_Nombre ;
     
     Initial_Sim%_S;
-    
-    #Todo símbolo no terminal debe ser declarado antesde usarse en las producciones
-    # Las producciones son de la siguiente forma
-    # %_Initial_Sim  <= %_Prod_A ... %_No_terminal_No $_Terminal_N ... ;
     
     %_S <=%_Prod_A $_FIN;
     
     %_Prod_A <=$_P_Ab %_Prod_B $_P_Ce;
     %_Prod_B <=%_Prod_B %Prod_C | %_Prod_C;
-    %_Prod_C <=$_Una_A $_Mas $_Una_A;:}}
+    %_Prod_C <=$_Una_A $_Mas $_Una_A;
+:}}
 
-? Wison
-# Fin de estructura Wison
+?Wison
