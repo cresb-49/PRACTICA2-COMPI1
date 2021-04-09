@@ -1,27 +1,28 @@
 import { Component, OnInit} from '@angular/core';
-import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.css']
 })
+
 export class EditorComponent implements OnInit {
 
+  
   ayuda:boolean =false;
-
-  constructor() { }
-
+  constructor() { 
+    this.expreciones ="";
+  }
   ngOnInit(): void {
 
   }
+
   helpUser(){
     this.ayuda = true;
   }
 
   procesarTexto(code:string){
-    console.log(code);
+    console.log(this.expreciones);
     return false;
   }
-
 }

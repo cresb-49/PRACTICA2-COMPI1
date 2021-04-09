@@ -66,6 +66,7 @@
 
 %{
 	//Codigo Javascript Incrustado
+        var errores = [];
 %}
 
 //separador de area
@@ -80,7 +81,11 @@ estructura      : WISON_INI expresiones expresionesP WISON_END
                         console.log('Error contenedor Wison: \"' + yytext +
                         '\" Linea: ' + (this._$.first_line) +
                         ' Columna: ' + (this._$.first_column+1));
-                }
+
+                        errores.push('Error contenedor Wison: \"' + yytext +
+                        '\" Linea: ' + (this._$.first_line) +
+                        ' Columna: ' + (this._$.first_column+1));
+                }       
                 ;
 
 expresiones     : LEX INI_LEX contLex END_LEX
@@ -89,12 +94,18 @@ expresiones     : LEX INI_LEX contLex END_LEX
                         console.log('Error en definicion de Estrucutra Lexica: \"' + yytext +
                         '\" Linea: ' + (this._$.first_line) +
                         ' Columna: ' + (this._$.first_column+1));
+                        errores.push('Error en definicion de Estrucutra Lexica: \"' + yytext +
+                        '\" Linea: ' + (this._$.first_line) +
+                        ' Columna: ' + (this._$.first_column+1));
                 }
                 ;
 contLex : TERMINAL STATE_TERMINAL ASIGN_RE expReg PUNTO_COMA contLexP
         | error
         {
                 console.log('Error en definicion de simbolo terminal: \"' + yytext +
+                '\" Linea: ' + (this._$.first_line) +
+                ' Columna: ' + (this._$.first_column+1));
+                errores.push('Error en definicion de simbolo terminal: \"' + yytext +
                 '\" Linea: ' + (this._$.first_line) +
                 ' Columna: ' + (this._$.first_column+1));
         }
@@ -113,6 +124,9 @@ expReg  : SINGLE_EXP
                 console.log('Error de exprecion regular: \"' + yytext +
                 '\" Linea: ' + (this._$.first_line) +
                 ' Columna: ' + (this._$.first_column+1));
+                errores.push('Error de exprecion regular: \"' + yytext +
+                '\" Linea: ' + (this._$.first_line) +
+                ' Columna: ' + (this._$.first_column+1));
         }
         ;
 
@@ -126,6 +140,9 @@ exp     : STATE_TERMINAL clause
         | error
         {
                 console.log('Error en agrupacion de exprecion: \"' + yytext +
+                '\" Linea: ' + (this._$.first_line) +
+                ' Columna: ' + (this._$.first_column+1));
+                errores.push('Error en agrupacion de exprecion: \"' + yytext +
                 '\" Linea: ' + (this._$.first_line) +
                 ' Columna: ' + (this._$.first_column+1));
         }
@@ -144,6 +161,9 @@ clause  : KLEE
                 console.log('Error de clausula: \"' + yytext +
                 '\" Linea: ' + (this._$.first_line) +
                 ' Columna: ' + (this._$.first_column+1));
+                errores.push('Error de clausula: \"' + yytext +
+                '\" Linea: ' + (this._$.first_line) +
+                ' Columna: ' + (this._$.first_column+1));
         }
         ;
 
@@ -152,6 +172,9 @@ expresionesP    : SYN INI_SYN contSyn END_SYN
                 | error
                 {
                         console.log('Error en definicion de Estrucutra Sintactica: \"' + yytext +
+                        '\" Linea: ' + (this._$.first_line) +
+                        ' Columna: ' + (this._$.first_column+1));
+                        errores.push('Error en definicion de Estrucutra Sintactica: \"' + yytext +
                         '\" Linea: ' + (this._$.first_line) +
                         ' Columna: ' + (this._$.first_column+1));
                 }
@@ -168,6 +191,21 @@ declaPro        : NO_TERMINAL STATE_NO_TERMINAL PUNTO_COMA declaPro
 initState       : INITIAL_SYM STATE_NO_TERMINAL PUNTO_COMA
                 ;
 
-producciones    : STATE_NO_TERMINAL PRODUCTION
+producciones    : STATE_NO_TERMINAL PRODUCTION derivacion PUNTO_COMA
                 |
+                ;
+
+derivacion      : STATE_TERMINAL derivacion
+                | STATE_NO_TERMINAL derivacion
+                | OR derivacion
+                |
+                | error
+                {
+                        console.log('Error en definicion de producciones de gramatica: \"' + yytext +
+                        '\" Linea: ' + (this._$.first_line) +
+                        ' Columna: ' + (this._$.first_column+1));
+                        errores.push('Error en definicion de producciones de gramatica: \"' + yytext +
+                        '\" Linea: ' + (this._$.first_line) +
+                        ' Columna: ' + (this._$.first_column+1));
+                }
                 ;

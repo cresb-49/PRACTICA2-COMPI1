@@ -93,7 +93,9 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/app/Analizador/analizador.js"
+            ]
           }
         },
         "lint": {
