@@ -1,6 +1,10 @@
 const express = require('express');
-
 const router = express.Router();
+const morgan = require('morgan');
+
+router.use(morgan('dev'));
+router.use(express.json()) // for parsing application/json
+router.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 
 router.get('/', (req, res) => {
@@ -11,27 +15,9 @@ router.get('/archivoWison', (req, res) => {
     res.render('cargarArchivo');
 });
 
-router.post('/prosessWison',(req,res) =>{
-    
-});
+router.post('/prosessWison',(req,res)=>{
+    console.log(req.body);
+    res.render('index');
+})
 
-
-
-
-
-
-
-//codigo de prueba
-/*
-router.get('/', (req,res) => {
-    //res.send('Pagina en construccion');
-    //res.sendFile(path.join(__dirname+'/views/index.html'));
-    res.render(path.join(__dirname+'/views/index'));
-    console.log(path.join(__dirname+'/views/index.ejs'));
-    //Muestra el path de ejecucion del servidor 
-    //console.log(__dirname);
-});*/
-
-
-
- module.exports = router;
+module.exports = router;

@@ -13,21 +13,14 @@
 <body style="background-color: darkslategrey;">
   <%- include ('plantillas/nav.html')%>
   <div class="container">
-    <form>
+    <form action="/prosessWison" method="POST">
       <div class="mb-3">
         <label class="form-label" style="color: white;font-size: larger;"></label>
         <textarea id="textWison" name="textWison" class="form-control" rows="15"></textarea>
+        <input type="text" id="textoWison" name="textoWison">
       </div>
-      <button type="submit" class="btn">Generar Analizador</button>
+      <button type="submit" class="btn" id="buttonSubmit">Generar Analizador</button>
     </form>
-    <form>
-      <div class="mb-3">
-        <label for="textParse" class="form-label" style="color: white; font-size: larger;"></label>
-        <textarea class="form-control" id="textParse" name="textParse" rows="15"></textarea>
-      </div>
-      <button type="submit" class="btn">Parse</button>
-    </form>
-
   </div>
   <br>
   <%-include ('plantillas/footer.html')%>  
