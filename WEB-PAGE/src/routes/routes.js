@@ -7,6 +7,21 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
+router.get('/archivoWison', (req, res) => {
+    res.render('cargarArchivo');
+});
+
+router.post('/prosessWison',(req,res) =>{
+    
+});
+
+
+
+
+
+
+
+//codigo de prueba
 /*
 router.get('/', (req,res) => {
     //res.send('Pagina en construccion');

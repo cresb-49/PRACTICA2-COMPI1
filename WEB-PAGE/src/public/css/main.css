@@ -4,11 +4,11 @@ textarea{
 
 button{
     background-color: gray;
-    border-color: white;
+    border: 0px;
 }
 button:hover{
     background-color: darkcyan;
-    border-color: white;
+    border: 0px;
 }
 
 a{
