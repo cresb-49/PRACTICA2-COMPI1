@@ -16,12 +16,15 @@
 /*separador de area*/
 %% 
 
-[ \r\t\n]                                   { /*ignorar*/}
-([/][*][*][^]*[*][/])                       //comentario de bloque
+[ \r\t\n]                                   %{ /*ignorar*/%}
+([#][^\n]*)                                 //Comentario de una sola linea
+([/][*][*][^*]*[*]+([^/*]*[^*]*[*]+)*[/])   //Comentario de bloque
 
 (Terminal)                                  return 'TERMINAL'
 (Lex)                                       return 'LEX'
 (Syntax)                                    return 'SYN'
+(No_Terminal)                               return 'NO_TERMINAL'
+(Initial_Sim)                               return 'INITIAL_SYM'
 ((Wison)("¿"))                              return 'WISON_INI'
 (("?")(Wison))                              return 'WISON_END'
 (("{")("{")(":"))                           return 'INI_SYN'
@@ -29,8 +32,6 @@
 ([{][:])                                    return 'INI_LEX'
 ([:][}])                                    return 'END_LEX'
 ([;])                                       return 'PUNTO_COMA'
-(No_Terminal)                               return 'NO_TERMINAL'
-(Initial_Sim)                               return 'INITIAL_SYM'
 ("|")                                       return 'OR'
 ("(")                                       return 'PA_A'
 (")")                                       return 'PA_C'
@@ -41,18 +42,16 @@
 ([*])                                       return 'KLEE'
 ([+])                                       return 'C_POSI'
 ([?])                                       return 'C_ANS'
-(("'")([^])+("'"))                          return 'SINGLE_EXP'
+((['])([^'])+([']))                         return 'SINGLE_EXP'
 (("[")("aA-zZ")("]"))                       return 'ANY_LE'
 (("[")("0-9")("]"))                         return 'ANY_NUM'
 (([a][A][-][z][Z])|([0][-][9]))             return 'SEC_ES'
-([#][^]*[\n])                               //Comentario de una sola linea
-
 
 
 /* Las últimas dos expresiones son para reconocer el fin de la entrada
  y caracteres no válidos.*/
 <<EOF>>                 return 'EOF'
-.                       return 'INVALID'
+.                       %{ console.log('Error lexico '+yytext);%}
 
 
 /* Fin de la Definición Léxica */
@@ -199,7 +198,7 @@ declaPro        : NO_TERMINAL STATE_NO_TERMINAL PUNTO_COMA declaPro
 initState       : INITIAL_SYM STATE_NO_TERMINAL PUNTO_COMA
                 ;
 
-producciones    : STATE_NO_TERMINAL PRODUCTION derivacion PUNTO_COMA
+producciones    : STATE_NO_TERMINAL PRODUCTION derivacion PUNTO_COMA producciones
                 |
                 ;
 
