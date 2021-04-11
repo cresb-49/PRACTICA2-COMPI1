@@ -182,6 +182,14 @@ expresionesP    : SYN INI_SYN contSyn END_SYN
 
 contSyn : declaPro initState producciones
         | error
+        {
+                console.log('Error en definicion de Estrucutra Sintactica: \"' + yytext +
+                '\" Linea: ' + (this._$.first_line) +
+                ' Columna: ' + (this._$.first_column+1));
+                errores.push('Error en definicion de Estrucutra Sintactica: \"' + yytext +
+                '\" Linea: ' + (this._$.first_line) +
+                ' Columna: ' + (this._$.first_column+1));
+        }
         ;
 
 declaPro        : NO_TERMINAL STATE_NO_TERMINAL PUNTO_COMA declaPro

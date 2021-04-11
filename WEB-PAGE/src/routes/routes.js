@@ -18,13 +18,15 @@ router.get('/archivoWison', (req, res) => {
 });
 
 router.post('/prosessWison',(req,res)=>{
-    //console.log(req.body);
-    console.log(req.body.textWison);
     analizador.parse(req.body.textWison);
     var errors = analizador.errors;
-    console.log('Imprecion desde Routes');
-    console.log(errors);
     
+    if(errors === undefined){
+        console.log('No se presentaron errores');
+    }else{
+        console.log(errors);
+    }
+
     res.render('index',req.body);
 })
 module.exports = router;
