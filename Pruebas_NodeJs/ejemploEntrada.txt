@@ -1,4 +1,3 @@
-
 Wison¿
 
 Lex {:
@@ -17,7 +16,6 @@ Lex {:
 :}
 
 Syntax{{:
-    
     #Declaracion de los simbolos terminales
     No_Terminal %_Prod_A;
     No_Terminal %_Prod_B;
@@ -31,7 +29,6 @@ Syntax{{:
     %_Prod_A <= $_P_Ab %_Prod_B $_P_Ce;
     %_Prod_B <= %_Prod_B %Prod_C | %_Prod_C;
     %_Prod_C <= $_Una_A $_Mas $_Una_A;
-
 :}}
 
 ?Wison

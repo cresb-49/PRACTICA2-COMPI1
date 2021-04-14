@@ -16,10 +16,23 @@
     <form action="/prosessWison" method="POST">
       <div class="mb-3">
         <label class="form-label" style="color: white;font-size: larger;"></label>
-        <textarea id="textWison" name="textWison" class="form-control" rows="15"> <%= textWison %></textarea>
+        <textarea id="textWison" name="textWison" class="form-control" rows="15"> <%=textWison%></textarea>
       </div>
       <button type="submit" class="btn" id="buttonSubmit">Generar Analizador</button>
     </form>
+    <br>
+
+    <div class="container">
+      <% errores.forEach(function(err){ %>
+        <div class="container">
+          <div class="alert alert-danger" role="alert">
+            <%= err %>
+          </div>
+        </div>
+        <br>
+      <% }); %>
+    </div>
+
   </div>
   <br>
   <%-include ('plantillas/footer.html')%>  
