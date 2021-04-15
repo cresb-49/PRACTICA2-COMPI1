@@ -82,6 +82,10 @@ router.post('/prosessWison', (req, res) => {
     try {
         result = analizador.parse(req.body.textWison);
         if (result !== undefined) {
+
+            console.log(result.getTerminales());
+            console.log(result.getNoTerminales());
+
             respuesta = (
                 {
                     "textWison": req.body.textWison,

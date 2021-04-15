@@ -69,21 +69,40 @@
 %{
 	//Codigo Javascript Incrustado
         var errores = [];
+        var simbTerminales = [];
+        var simbNoTerminales = [];
+        var producciones = [];
+
         const resultado = require('./resultados');
+        const production = require('./produccion');
 %}
 
 //separador de area
 %% 
 
-ini     : estructura EOF{ 
-                                $$ = new resultado(errores);
-                                errores = null;
-                                return $$;
-                        }
+ini     : estructura EOF
+                { 
+                        $$ = new resultado(errores,simbTerminales,simbNoTerminales);
+                        errores = [];
+                        simbTerminales =[];
+                        simbNoTerminales = [];
+                        producciones = [];
+                        return $$;
+                }
+        | error EOF
+                {
+                        $$ = new resultado(errores,simbTerminales,simbNoTerminales);
+                        errores = [];
+                        simbTerminales =[];
+                        simbNoTerminales = [];
+                        producciones = [];
+                        return $$;
+                }
         ;
 
 estructura      : WISON_INI expresiones expresionesP WISON_END
-                | error EOF
+                //| error EOF
+                | WISON_INI error WISON_END
                 {
                         /*console.log('Error contenedor Wison: \"' + yytext +
                         '\" Linea: ' + (this._$.first_line) +
@@ -96,7 +115,8 @@ estructura      : WISON_INI expresiones expresionesP WISON_END
                 ;
 
 expresiones     : LEX INI_LEX contLex END_LEX
-                | error WISON_END
+                //| error WISON_END
+                | LEX INI_LEX error END_LEX
                 {
                         /*console.log('Error en definicion de Estrucutra Lexica: \"' + yytext +
                         '\" Linea: ' + (this._$.first_line) +
@@ -107,6 +127,9 @@ expresiones     : LEX INI_LEX contLex END_LEX
                 }
                 ;
 contLex : TERMINAL STATE_TERMINAL ASIGN_RE expReg PUNTO_COMA contLexP
+        {
+                simbTerminales.push($2);
+        }
         | error PUNTO_COMA
         {
                 /*console.log('Error en definicion de simbolo terminal: \"' + yytext +
@@ -176,7 +199,8 @@ clause  : KLEE
 
 
 expresionesP    : SYN INI_SYN declaPro END_SYN
-                | error WISON_END
+                //| error WISON_END
+                | SYN INI_SYN error END_SYN
                 {
                         /*console.log('Error en definicion de Estrucutra Sintactica: \"' + yytext +
                         '\" Linea: ' + (this._$.first_line) +
@@ -191,6 +215,9 @@ expresionesP    : SYN INI_SYN declaPro END_SYN
         ;*/
 
 declaPro        : NO_TERMINAL STATE_NO_TERMINAL PUNTO_COMA declaPro
+                {
+                        simbNoTerminales.push($2);
+                }
                 | initState
                 | error initState
                 {
@@ -216,6 +243,11 @@ initState       : INITIAL_SYM STATE_NO_TERMINAL PUNTO_COMA producciones
                 ;
 
 producciones    : STATE_NO_TERMINAL PRODUCTION derivacion PUNTO_COMA producciones
+                {
+                        var tmpP = new production($1);
+                        tmpP.agregarDerivacion($3);
+                        producciones.push(tmp)
+                }
                 |
                 | error PUNTO_COMA
                 {
@@ -229,9 +261,21 @@ producciones    : STATE_NO_TERMINAL PRODUCTION derivacion PUNTO_COMA produccione
                 ;
 
 derivacion      : STATE_TERMINAL derivacion
+                {
+                        $$ = $2.push($1);
+                }
                 | STATE_NO_TERMINAL derivacion
+                {
+                        $$ = $2.push($1);
+                }
                 | OR derivacion
+                {
+                        $$ = $2;
+                }
                 |
+                {
+                        $$ = [];
+                }
                 | error PUNTO_COMA
                 {
                         /*console.log('Error en definicion de producciones de gramatica: \"' + yytext +
