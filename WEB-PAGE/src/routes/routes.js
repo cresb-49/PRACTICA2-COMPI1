@@ -23,10 +23,6 @@ const upload = multer(
     }
 );
 
-
-
-
-
 router.use(morgan('dev'));
 router.use(express.json()) // for parsing application/json
 router.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
