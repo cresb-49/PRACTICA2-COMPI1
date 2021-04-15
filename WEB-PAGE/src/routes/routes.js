@@ -5,7 +5,7 @@ const multer = require('multer');
 const analizador = require('../js/analizador');
 const fs = require('fs');
 
-const path = '/media/benjamin/DATA/Documents/Programas_compiladores_1/PRACTICA_2/WEB-PAGE/uploads/';
+const path = './uploads/';
 
 
 var fileName = null;
