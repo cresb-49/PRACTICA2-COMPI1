@@ -3,10 +3,15 @@ class produccion{
         this.padre = padre;
         this.derivaciones=[];
     }
+    getPadre(){
+        return this.padre;
+    }
     agregarDerivacion(dev){
-        this.derivaciones.push(dev);
+        this.derivaciones = dev;
     }
     getDerivaciones(){
         return this.derivaciones;
     }
 }
+
+module.exports = produccion;

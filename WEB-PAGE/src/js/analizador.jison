@@ -51,9 +51,9 @@
 /* Las últimas dos expresiones son para reconocer el fin de la entrada
  y caracteres no válidos.*/
 <<EOF>>                 return 'EOF'
-.                       %{ console.log('Error lexico '+yytext+' en Linea: '+yylloc.first_line+' , Columna: '+(yylloc.first_column+1));
-                           errores.push('Error lexico '+yytext+' en Linea: '+yylloc.first_line+' , Columna: '+(yylloc.first_column+1));                        
-                           //console.log(errores);
+.                       %{ 
+                                //console.log('Error lexico '+yytext+' en Linea: '+yylloc.first_line+' , Columna: '+(yylloc.first_column+1));
+                                errores.push('Error lexico '+yytext+' en Linea: '+yylloc.first_line+' , Columna: '+(yylloc.first_column+1));                        
                         %}
 
 
@@ -72,9 +72,10 @@
         var simbTerminales = [];
         var simbNoTerminales = [];
         var producciones = [];
+        var tmpProd =[];
 
         const resultado = require('./resultados');
-        const production = require('./produccion');
+        const resultPro = require('./produccion');
 %}
 
 //separador de area
@@ -82,7 +83,7 @@
 
 ini     : estructura EOF
                 { 
-                        $$ = new resultado(errores,simbTerminales,simbNoTerminales);
+                        $$ = new resultado(errores,simbTerminales,simbNoTerminales,producciones);
                         errores = [];
                         simbTerminales =[];
                         simbNoTerminales = [];
@@ -91,7 +92,7 @@ ini     : estructura EOF
                 }
         | error EOF
                 {
-                        $$ = new resultado(errores,simbTerminales,simbNoTerminales);
+                        $$ = new resultado(errores,simbTerminales,simbNoTerminales,producciones);
                         errores = [];
                         simbTerminales =[];
                         simbNoTerminales = [];
@@ -244,9 +245,9 @@ initState       : INITIAL_SYM STATE_NO_TERMINAL PUNTO_COMA producciones
 
 producciones    : STATE_NO_TERMINAL PRODUCTION derivacion PUNTO_COMA producciones
                 {
-                        var tmpP = new production($1);
+                        var tmpP = new resultPro($1);
                         tmpP.agregarDerivacion($3);
-                        producciones.push(tmp)
+                        producciones.push(tmpP)
                 }
                 |
                 | error PUNTO_COMA
@@ -262,11 +263,15 @@ producciones    : STATE_NO_TERMINAL PRODUCTION derivacion PUNTO_COMA produccione
 
 derivacion      : STATE_TERMINAL derivacion
                 {
-                        $$ = $2.push($1);
+                        var tmp = $2;
+                        tmp.push($1);
+                        $$ = tmp;
                 }
                 | STATE_NO_TERMINAL derivacion
                 {
-                        $$ = $2.push($1);
+                        var tmp = $2;
+                        tmp.push($1);
+                        $$ = tmp;
                 }
                 | OR derivacion
                 {

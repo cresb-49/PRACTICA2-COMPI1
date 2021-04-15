@@ -46,11 +46,12 @@ router.post('/file', upload.single('fileWison'), (req, res) => {
     fs.readFile(path + fileName, 'utf-8', (err, data) => {
         if (err) {
             var fileErr = 'error: ' + err;
-            respuesta =({"errores":fileErr})
+            respuesta = ({ "errores": fileErr })
             res.render('cargarArchivo', respuesta);
         } else {
             try {
                 result = analizador.parse(data);
+                verificarCompocicion(result);
                 if (result !== undefined) {
                     respuesta = (
                         {
@@ -58,10 +59,10 @@ router.post('/file', upload.single('fileWison'), (req, res) => {
                         }
                     );
                     res.render('cargarArchivo', respuesta);
-                }else{
-                    res.render('cargarArchivo', {"errores":[]});
+                } else {
+                    res.render('cargarArchivo', { "errores": [] });
                 }
-                
+
             } catch (error) {
                 var msj = 'Error fatal en analisis de gramatica: ' + error;
                 respuesta = (
@@ -83,13 +84,11 @@ router.post('/prosessWison', (req, res) => {
         result = analizador.parse(req.body.textWison);
         if (result !== undefined) {
 
-            console.log(result.getTerminales());
-            console.log(result.getNoTerminales());
-
+            verificarCompocicion(result);
             respuesta = (
                 {
                     "textWison": req.body.textWison,
-                    "errores": result.getErrores()
+                    "errores": (result.getErrores())
                 }
             );
         }
@@ -106,4 +105,38 @@ router.post('/prosessWison', (req, res) => {
 
     res.render('index', respuesta);
 })
+
+function verificarCompocicion(analisis) {
+    var term = analisis.getTerminales();
+    term.push('$_FIN');
+    var noTerm = analisis.getNoTerminales();
+    var prduc = analisis.getProducciones();
+
+    var bandera = false;
+
+    prduc.forEach(produc => {
+
+        if (noTerm.find(pr => pr === produc.getPadre())) {
+            bandera = true;
+        } else {
+            bandera = false;
+        }
+
+        if (bandera) {
+            var element = produc.getDerivaciones();
+            element.forEach(ele => {
+                //console.log('Produccion: ' + produc.getPadre() + '->' + ele);
+                if(!(term.find(t=> t === ele) || noTerm.find(te => te === ele))){
+                    console.log('Error: '+ele+' se esta usando y no esta definido');
+                    analisis.getErrores().push('Error estado no declarado: '+ele+' se esta usando y no esta definido');
+                }
+            });
+        }else{
+            //console.log('Error: '+produc.getPadre()+' no esta definido como no terminal')
+            analisis.getErrores().push('Error estado no declarado: '+produc.getPadre()+' no esta definido como no terminal')
+        }
+    });
+}
+
+
 module.exports = router;

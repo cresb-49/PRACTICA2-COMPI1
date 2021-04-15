@@ -1,9 +1,9 @@
 class resultado{
-    constructor(errores,terminales,noTerminales){
+    constructor(errores,terminales,noTerminales,producciones){
         this.errores = errores;
         this.terminales = terminales;
         this.noTerminales = noTerminales;
-        this.producciones = [];
+        this.producciones = producciones;
     }
     getErrores(){
         return this.errores;
